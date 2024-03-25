@@ -1,10 +1,17 @@
-# Importações
-from flask import Flask, render_template, request, redirect, url_for
 import json
+from flask import Flask, render_template, request, redirect, url_for
+
+ARQUIVO_DADOS = 'dados/dados.json'
 
 # Carregar dados do arquivo JSON
-with open('dados.json', 'r') as f:
-    dados = json.load(f)
+def carregar_dados():
+    with open(ARQUIVO_DADOS, 'r') as f:
+        return json.load(f)
+
+# Salvar dados no arquivo JSON
+def salvar_dados(dados):
+    with open(ARQUIVO_DADOS, 'w') as f:
+        json.dump(dados, f)
 
 # Instanciar Flask
 app = Flask(__name__)
@@ -14,6 +21,7 @@ app = Flask(__name__)
 # Página inicial
 @app.route('/')
 def index():
+    dados = carregar_dados()
     return render_template('index.html', pessoas=dados)
 
 # Criar Pessoa
@@ -25,48 +33,58 @@ def criar():
             "cpf": request.form['cpf'],
             "telefone": request.form['telefone'],
             "email": request.form['email'],
-            "endereço": request.form['endereço'],
+            "endereco": request.form['endereco'],
             "cep": request.form['cep'],
             "nascimento": request.form['nascimento'],
         }
-        dados.append(nova_pessoa)
-        _salvar_dados()
+        dados = carregar_dados()
+        dados[nova_pessoa['cpf']] = nova_pessoa
+        #dados.append(nova_pessoa)
+        salvar_dados(dados)
         return redirect(url_for('index'))
     return render_template('criar.html')
 
-# Ler Pessoa
-@app.route('/ler/<int:id>')
-def ler(id):
-    pessoa = dados[id]
+# Buscar Pessoa por CPF
+@app.route('/buscar/<cpf>')
+def buscar(cpf):
+    dados = carregar_dados()
+    pessoa = None
+    for p in dados:
+        if p['cpf'] == cpf:
+            pessoa = p
+            break
     return render_template('ler.html', pessoa=pessoa)
 
 # Atualizar Pessoa
-@app.route('/atualizar/<int:id>', methods=['GET', 'POST'])
-def atualizar(id):
-    pessoa = dados[id]
+@app.route('/atualizar/<cpf>', methods=['GET', 'POST'])
+def atualizar(cpf):
+    dados = carregar_dados()
+    pessoa = None
+    for p in dados:
+        if p['cpf'] == cpf:
+            pessoa = p
+            break
     if request.method == 'POST':
         pessoa['nome'] = request.form['nome']
-        pessoa['cpf'] = request.form['cpf']
         pessoa['telefone'] = request.form['telefone']
         pessoa['email'] = request.form['email']
-        pessoa['endereço'] = request.form['endereço']
+        pessoa['endereco'] = request.form['endereco']
         pessoa['cep'] = request.form['cep']
         pessoa['nascimento'] = request.form['nascimento']
-        _salvar_dados()
+        salvar_dados(dados)
         return redirect(url_for('index'))
     return render_template('atualizar.html', pessoa=pessoa)
 
 # Excluir Pessoa
-@app.route('/excluir/<int:id>')
-def excluir(id):
-    del dados[id]
-    _salvar_dados()
+@app.route('/excluir/<cpf>')
+def excluir(cpf):
+    dados = carregar_dados()
+    nova_lista = []
+    for p in dados:
+        if p['cpf'] != cpf:
+            nova_lista.append(p)
+    salvar_dados(nova_lista)
     return redirect(url_for('index'))
-
-# Salvar dados no arquivo JSON
-def _salvar_dados():
-    with open('dados.json', 'w') as f:
-        json.dump(dados, f)
 
 # Iniciar servidor
 if __name__ == '__main__':

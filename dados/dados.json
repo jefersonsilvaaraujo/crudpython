@@ -1,0 +1,26 @@
+{
+    "12345678900": {
+        "nome": "João Silva",
+        "telefone": "(11) 99876-5432",
+        "email": "joao@email.com",
+        "endereco": "Rua sem nome",
+        "cep": "123456",
+        "nascimento": "01/01/1980"
+    },
+    "12345678901": {
+        "nome": "João Silva",
+        "telefone": "(11) 99876-5432",
+        "email": "joao@email.com",
+        "endereco": "Rua sem nome",
+        "cep": "123456",
+        "nascimento": "01/01/1980"
+    },
+    "12345678902": {
+        "nome": "João Silva",
+        "telefone": "(11) 99876-5432",
+        "email": "joao@email.com",
+        "endereco": "Rua sem nome",
+        "cep": "123456",
+        "nascimento": "01/01/1980"
+    }
+}

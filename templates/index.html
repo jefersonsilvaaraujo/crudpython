@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Pessoas</title>
+</head>
+<body>
+    <h1>Lista de Pessoas</h1>
+    <a href="{{ url_for('criar') }}">Criar Pessoa</a>
+    <table>
+        <tr>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Telefone</th>
+            <th>Email</th>
+            <th>Endereço</th>
+            <th>CEP</th>
+            <th>Nascimento</th>
+            <th>Ações</th>
+        </tr>
+        {% for pessoa in pessoas %}
+        <tr>
+            <td>{{ pessoa.nome }}</td>
+            <td>{{ pessoa.cpf }}</td>
+            <td>{{ pessoa.telefone }}</td>
+            <td>{{ pessoa.email }}</td>
+            <td>{{ pessoa.endereco }}</td>
+            <td>{{ pessoa.cep }}</td>
+            <td>{{ pessoa.nascimento }}</td>
+            <td>
+                <a href="{{ url_for('buscar', cpf=pessoa.cpf) }}">Buscar</a> |
+                <a href="{{ url_for('atualizar', cpf=pessoa.cpf) }}">Atualizar</a> |
+                <a href="{{ url_for('excluir', cpf=pessoa.cpf) }}">Excluir</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
