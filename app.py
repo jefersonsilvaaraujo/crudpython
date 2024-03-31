@@ -6,7 +6,8 @@ ARQUIVO_DADOS = 'dados/dados.json'
 # Carregar dados do arquivo JSON
 def carregar_dados():
     with open(ARQUIVO_DADOS, 'r') as f:
-        return json.load(f)
+        dados = json.load(f)
+    return dados 
 
 # Salvar dados no arquivo JSON
 def salvar_dados(dados):
@@ -44,47 +45,49 @@ def criar():
         return redirect(url_for('index'))
     return render_template('criar.html')
 
-# Buscar Pessoa por CPF
-@app.route('/buscar/<cpf>')
-def buscar(cpf):
-    dados = carregar_dados()
-    pessoa = None
-    for p in dados:
-        if p['cpf'] == cpf:
-            pessoa = p
-            break
-    return render_template('ler.html', pessoa=pessoa)
-
 # Atualizar Pessoa
 @app.route('/atualizar/<cpf>', methods=['GET', 'POST'])
 def atualizar(cpf):
     dados = carregar_dados()
-    pessoa = None
-    for p in dados:
-        if p['cpf'] == cpf:
-            pessoa = p
-            break
-    if request.method == 'POST':
-        pessoa['nome'] = request.form['nome']
-        pessoa['telefone'] = request.form['telefone']
-        pessoa['email'] = request.form['email']
-        pessoa['endereco'] = request.form['endereco']
-        pessoa['cep'] = request.form['cep']
-        pessoa['nascimento'] = request.form['nascimento']
-        salvar_dados(dados)
-        return redirect(url_for('index'))
+    pessoa = dados.get(cpf)
+    if pessoa is None:
+        pessoa = "Dados não encontrados."
+    else:
+        for p in dados:
+            if dados[p] == cpf:
+                pessoa = dados[p]
+                break
+        if request.method == 'POST':
+            pessoa['nome'] = request.form['nome']
+            pessoa['telefone'] = request.form['telefone']
+            pessoa['email'] = request.form['email']
+            pessoa['endereco'] = request.form['endereco']
+            pessoa['cep'] = request.form['cep']
+            pessoa['nascimento'] = request.form['nascimento']
+            salvar_dados(dados)
+            return redirect(url_for('index'))
     return render_template('atualizar.html', pessoa=pessoa)
 
 # Excluir Pessoa
 @app.route('/excluir/<cpf>')
 def excluir(cpf):
     dados = carregar_dados()
-    nova_lista = []
-    for p in dados:
-        if p['cpf'] != cpf:
-            nova_lista.append(p)
-    salvar_dados(nova_lista)
-    return redirect(url_for('index'))
+    if cpf in dados:
+        del dados[cpf]
+        salvar_dados(dados)
+        return redirect(url_for('index'))
+    else:
+        return redirect(url_for('index'))
+    
+# Buscar Pessoa por CPF
+@app.route('/buscar', methods=['GET'])
+def buscar():
+    cpf = request.args.get('cpf', '')
+    dados = carregar_dados()
+    pessoa = dados.get(cpf)
+    if pessoa is not None:
+        dados = {cpf: pessoa}
+    return render_template('index.html', pessoas=dados)
 
 # Iniciar servidor
 if __name__ == '__main__':

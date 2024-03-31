@@ -1,26 +1,29 @@
 {
-    "12345678900": {
-        "nome": "João Silva",
-        "telefone": "(11) 99876-5432",
-        "email": "joao@email.com",
-        "endereco": "Rua sem nome",
-        "cep": "123456",
-        "nascimento": "01/01/1980"
+    "837.979.471-00": {
+        "nome": "Jeferson Silva Ara\u00fajo",
+        "cpf": "837.979.471-00",
+        "telefone": "(62) 99628-1163",
+        "email": "andre@teste.com.br",
+        "endereco": "Rua VP 03, Q52, L31A, Residencial Vale dos Pirineus",
+        "cep": "75.056-038",
+        "nascimento": "2008-06-10"
     },
-    "12345678901": {
-        "nome": "João Silva",
-        "telefone": "(11) 99876-5432",
-        "email": "joao@email.com",
+    "123.456.789-00": {
+        "nome": "Maria da Silva",
+        "cpf": "123.456.789-00",
+        "telefone": "(22) 22222-2222",
+        "email": "maria@teste.com.br",
         "endereco": "Rua sem nome",
-        "cep": "123456",
-        "nascimento": "01/01/1980"
+        "cep": "33.333-333",
+        "nascimento": "1969-11-12"
     },
-    "12345678902": {
-        "nome": "João Silva",
-        "telefone": "(11) 99876-5432",
-        "email": "joao@email.com",
-        "endereco": "Rua sem nome",
-        "cep": "123456",
-        "nascimento": "01/01/1980"
+    "888.888.888-88": {
+        "nome": "Alguem de Sousa",
+        "cpf": "888.888.888-88",
+        "telefone": "(99) 99999-9999",
+        "email": "teste@teste.com",
+        "endereco": "rua dos alfeneiros, bairro jundia\u00ed",
+        "cep": "77.777-777",
+        "nascimento": "2022-08-18"
     }
 }

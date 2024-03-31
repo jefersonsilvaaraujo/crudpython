@@ -4,11 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controle de Pessoas</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+    <div class="header">
+        <img src="{{ url_for('static', filename='img/logo-transp.jpeg') }}" alt="Logo">
+    </div>
     <h1>Lista de Pessoas</h1>
-    <a href="{{ url_for('criar') }}">Criar Pessoa</a>
-    <table>
+    <a href="{{ url_for('criar') }}">Criar Pessoa</a>|
+    <form action="{{ url_for('buscar') }}" method="get">
+        <input type="text" id="cpf" name="cpf" placeholder="Digite o CPF">
+        <input type="submit" value="Buscar">
+    </form>
+    <table border="1">
         <tr>
             <th>Nome</th>
             <th>CPF</th>
@@ -19,22 +29,28 @@
             <th>Nascimento</th>
             <th>Ações</th>
         </tr>
-        {% for pessoa in pessoas %}
+        {% for cpf, pessoa in pessoas.items() %}
         <tr>
             <td>{{ pessoa.nome }}</td>
-            <td>{{ pessoa.cpf }}</td>
+            <td>{{ cpf }}</td>
             <td>{{ pessoa.telefone }}</td>
             <td>{{ pessoa.email }}</td>
             <td>{{ pessoa.endereco }}</td>
             <td>{{ pessoa.cep }}</td>
             <td>{{ pessoa.nascimento }}</td>
             <td>
-                <a href="{{ url_for('buscar', cpf=pessoa.cpf) }}">Buscar</a> |
                 <a href="{{ url_for('atualizar', cpf=pessoa.cpf) }}">Atualizar</a> |
-                <a href="{{ url_for('excluir', cpf=pessoa.cpf) }}">Excluir</a>
+                <a href="{{ url_for('excluir', cpf=pessoa.cpf) }}" onclick="return confirm('Tem certeza de que deseja excluir esta pessoa?')">Excluir</a>
             </td>
         </tr>
         {% endfor %}
     </table>
+    <script>
+        $(document).ready(function(){
+            $('#telefone').mask('(00) 00000-0000');
+            $('#cpf').mask('000.000.000-00');
+            $('#cep').mask('00.000-000')
+        });
+    </script>
 </body>
 </html>
